@@ -43,24 +43,20 @@
       height: 44px;
       width: auto;
       display: block;
-	.header-logo-right {
-	  position: absolute;
-	  right: 18px;
-	  top: 50%;
-	  transform: translateY(-50%);
-	  display: flex;
-	  align-items: center;
-	  height: 100%;
-	}
-	.header-logo-right img {
-	  height: 44px;
-	  width: auto;
-	  display: block;
-	}
-	@media (max-width: 600px) {
-	  .header-logo-right { right: 4px; }
-	  .header-logo-right img { height: 30px; }
-	}
+    }
+    .header-logo-right {
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      align-items: center;
+      height: 100%;
+    }
+    .header-logo-right img {
+      height: 44px;
+      width: auto;
+      display: block;
     }
     .header-title {
       flex: 1;
@@ -90,49 +86,44 @@
       margin-top: 0;
     }
     .address-bar {
-		  display: flex;
-		  align-items: center;
-		  justify-content: center;
-		  margin-bottom: 18px;
-		  gap: 8px;
-		}
-
-		#addressInput,
-		#goButton {
-		  height: 44px; /* Set the same height */
-		  font-size: 1rem;
-		  border: 1px solid #bbb;
-		  border-radius: 6px;
-		  box-shadow: 0 1px 5px rgba(0,0,0,0.04);
-		  box-sizing: border-box;
-		  background: #fff;
-		}
-
-		#addressInput {
-		  width: 320px;
-		  padding: 8px 12px;
-		  text-align: center;
-		  margin-bottom: 0;
-		  transition: border 0.2s;
-		}
-
-		#goButton {
-		  padding: 0 20px; /* Remove vertical padding, only horizontal */
-		  color: #222;
-		  cursor: pointer;
-		  transition: background 0.2s, border 0.2s;
-		  margin-left: 0;
-		  display: flex;
-		  align-items: center;
-		  justify-content: center;
-		}
-
-#goButton:hover, #goButton:focus {
-  background: #f0f4fa;
-  border-color: #0074d9;
-  outline: none;
-}
-
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 18px;
+      gap: 8px;
+    }
+    #addressInput,
+    #goButton {
+      height: 44px;
+      font-size: 1rem;
+      border: 1px solid #bbb;
+      border-radius: 6px;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.04);
+      box-sizing: border-box;
+      background: #fff;
+    }
+    #addressInput {
+      width: 320px;
+      padding: 8px 12px;
+      text-align: center;
+      margin-bottom: 0;
+      transition: border 0.2s;
+    }
+    #goButton {
+      padding: 0 20px;
+      color: #222;
+      cursor: pointer;
+      transition: background 0.2s, border 0.2s;
+      margin-left: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #goButton:hover, #goButton:focus {
+      background: #f0f4fa;
+      border-color: #0074d9;
+      outline: none;
+    }
     #vizContainer {
       margin-top: 0;
       display: flex;
@@ -209,6 +200,8 @@
       }
       .header-logo { left: 4px; }
       .header-logo img { height: 30px; }
+      .header-logo-right { right: 4px; }
+      .header-logo-right img { height: 30px; }
       .header-title { font-size: 1.02rem; }
       .address-bar { gap: 6px; }
       #addressInput { width: 60vw; min-width: 0; }
@@ -221,16 +214,16 @@
 </head>
 <body>
   <header class="header">
-  <div class="header-logo">
-    <img src="https://www.clearr.com.au/clearr-logo.jpg" alt="Company Logo" id="ClearRLogo">
-  </div>
-  <div class="header-title">
-    ClearR Maps Tableau Dashboard - Proof of Concept
-  </div>
-  <div class="header-logo-right">
-    <img src="https://www.tableau.com/themes/custom/tableau_www/logo.v2.svg" alt="Tableau Logo" id="TableauLogo">
-  </div>
-</header>
+    <div class="header-logo">
+      <img src="https://www.clearr.com.au/clearr-logo.jpg" alt="Company Logo" id="ClearRLogo">
+    </div>
+    <div class="header-title">
+      ClearR Maps Tableau Dashboard - Proof of Concept
+    </div>
+    <div class="header-logo-right">
+      <img src="https://www.tableau.com/themes/custom/tableau_www/logo.v2.svg" alt="Tableau Logo" id="TableauLogo">
+    </div>
+  </header>
   <div class="container">
     <h2>Find nearby fast food options by entering an address below</h2>
     <div class="address-bar">
@@ -239,7 +232,6 @@
     </div>
     <div id="vizContainer"></div>
   </div>
-
   <!-- Footer -->
   <div class="footer-bottom">
     <div class="footer-content">
@@ -254,7 +246,6 @@
   <div class="footer-top">
     <small>&copy; 2024 ClearR. All Rights Reserved.</small>
   </div>
-
   <!-- jQuery and jQuery UI -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
