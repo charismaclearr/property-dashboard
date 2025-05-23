@@ -3,49 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <title>Property Dashboard</title>
-
-  <!-- jQuery UI CSS -->
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" />
-
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-    }
-    #addressInput {
-      width: 300px;
-      padding: 8px;
-      font-size: 16px;
-    }
-    #vizContainer {
-      margin-top: 30px;
-    }
-    tableau-viz {
-      width: 1000px;
-      height: 840px;
-      display: block;
-    }
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    #addressInput { width: 300px; padding: 8px; font-size: 16px; }
+    #vizContainer { margin-top: 30px; }
+    tableau-viz { width: 1000px; height: 840px; display: block; }
   </style>
 </head>
 <body>
   <h2>Enter an Address</h2>
   <input type="text" id="addressInput" placeholder="Start typing an address..." />
-
-  <div id="vizContainer">
-    <!-- Tableau Viz will be injected here -->
-  </div>
+  <div id="vizContainer"></div>
 
   <!-- jQuery and jQuery UI -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 
-  <!-- Tableau embedding web component script -->
+  <!-- Tableau Embedding API v3 as a module -->
   <script type="module" src="https://prod-apsoutheast-a.online.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js"></script>
 
   <script>
     const vizContainer = document.getElementById('vizContainer');
-
-    // Load addresses.json for autocomplete source
     fetch('https://charismaclearr.github.io/property-dashboard/addresses.json')
       .then(res => res.json())
       .then(addresses => {
@@ -62,16 +41,9 @@
       });
 
     function loadTableauDashboard(address) {
-      // Clear existing viz if any
       vizContainer.innerHTML = '';
-
-      // URL of your dashboard with parameter to filter by FullAddress
-      // Adjust :AddressDashboard/MapDashboard URL as needed
       const baseUrl = "https://prod-apsoutheast-a.online.tableau.com/t/clearrtableau/views/AddressDashboard/MapDashboard";
-      // Tableau URL parameter for filtering your parameter FullAddress (assumes parameter name is FullAddress)
       const paramStr = `?:embed=y&:showVizHome=no&FullAddress=${encodeURIComponent(address)}`;
-
-      // Create new tableau-viz element
       const tableauViz = document.createElement('tableau-viz');
       tableauViz.id = 'tableau-viz';
       tableauViz.src = baseUrl + paramStr;
@@ -79,8 +51,6 @@
       tableauViz.setAttribute('height', '840');
       tableauViz.setAttribute('hide-tabs', '');
       tableauViz.setAttribute('toolbar', 'bottom');
-
-      // Append to container
       vizContainer.appendChild(tableauViz);
     }
   </script>
