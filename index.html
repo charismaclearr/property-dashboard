@@ -42,18 +42,18 @@
       });
 
     function loadTableauDashboard(address) {
-      vizContainer.innerHTML = '';
-      const baseUrl = "https://prod-apsoutheast-a.online.tableau.com/t/clearrtableau/views/AddressDashboard/MapDashboard";
-      const paramStr = `?:embed=y&:showVizHome=no&FullAddress=${encodeURIComponent(address)}`;
-      const tableauViz = document.createElement('tableau-viz');
-      tableauViz.id = 'tableau-viz';
-      tableauViz.src = baseUrl + paramStr;
-      tableauViz.setAttribute('width', '1000');
-      tableauViz.setAttribute('height', '840');
-      tableauViz.setAttribute('hide-tabs', '');
-      tableauViz.setAttribute('toolbar', 'bottom');
-      vizContainer.appendChild(tableauViz);
-    }
+  vizContainer.innerHTML = '';
+  const baseUrl = "https://prod-apsoutheast-a.online.tableau.com/t/clearrtableau/views/AddressDashboard/MapDashboard";
+  const paramStr = `?:embed=y&:showVizHome=no&FullAddress%20Parameter=${encodeURIComponent(address)}`;
+  const tableauViz = document.createElement('tableau-viz');
+  tableauViz.id = 'tableau-viz';
+  tableauViz.src = baseUrl + paramStr;
+  tableauViz.setAttribute('width', '1000');
+  tableauViz.setAttribute('height', '840');
+  tableauViz.setAttribute('hide-tabs', '');
+  tableauViz.setAttribute('toolbar', 'bottom');
+  vizContainer.appendChild(tableauViz);
+}
   </script>
 </body>
 </html>
