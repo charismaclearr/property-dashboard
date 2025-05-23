@@ -38,9 +38,10 @@
       });
 
     function loadTableauDashboard(address) {
-      // URL encode parameter name and value
+  // Remove commas from the address
+      const addressNoCommas = address.replace(/,/g, '');
+      const paramValue = encodeURIComponent(addressNoCommas);
       const paramName = 'FullAddress%20Parameter';
-      const paramValue = encodeURIComponent(address);
       const baseUrl = 'https://public.tableau.com/views/AddressDashboard_17479873620460/MapDashboard';
       const params = `?:embed=y&:showVizHome=no&${paramName}=${paramValue}`;
       const fullUrl = `${baseUrl}${params}`;
