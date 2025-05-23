@@ -1,29 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Property Dashboard</title>
-
-  <!-- jQuery and jQuery UI (for autocomplete) -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
-  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css" />
-
-  <!-- Tableau JS API -->
-  <script src="https://public.tableau.com/javascripts/api/tableau-2.9.2.min.js"></script>
-
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
   <style>
     body {
       font-family: Arial, sans-serif;
-      padding: 20px;
+      margin: 20px;
     }
-
     #addressInput {
       width: 300px;
       padding: 8px;
       font-size: 16px;
     }
-
     #vizContainer {
       margin-top: 30px;
       width: 100%;
@@ -32,25 +22,36 @@
   </style>
 </head>
 <body>
-
-  <h2>Search Property Address</h2>
-  <input type="text" id="addressInput" placeholder="Start typing an address..." />
+  <h2>Enter an Address</h2>
+  <input type="text" id="addressInput" placeholder="Start typing an address...">
 
   <div id="vizContainer"></div>
+
+  <!-- jQuery and jQuery UI for autocomplete -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+
+  <!-- Tableau JS API (clean, non-blocking) -->
+  <script async src="https://public.tableau.com/javascripts/api/tableau-2.min.js"></script>
 
   <script>
     let viz;
 
-    function loadTableauDashboard() {
-      const vizUrl = "https://prod-apsoutheast-a.online.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js'></script><tableau-viz id='tableau-viz' src='https://prod-apsoutheast-a.online.tableau.com/t/clearrtableau/views/AddressDashboard/MapDashboard?:embed=y&:showVizHome=no' width='1000' height='840' hide-tabs toolbar='bottom' ></tableau-viz>";
+    function loadTableauDashboard(address) {
+      const vizUrl = "https://prod-apsoutheast-a.online.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js'></script><tableau-viz id='tableau-viz' src='https://prod-apsoutheast-a.online.tableau.com/t/clearrtableau/views/AddressDashboard/MapDashboard?:embed=y&:showVizHome=no' width='1000' height='840' hide-tabs toolbar='bottom' ></tableau-viz>"; // Replace with your actual Tableau Online URL
       const containerDiv = document.getElementById("vizContainer");
 
       const options = {
         hideTabs: true,
         onFirstInteractive: function () {
-          console.log("Tableau dashboard loaded.");
+          console.log("Dashboard loaded");
+          setAddressParameter(address);
         }
       };
+
+      if (viz) {
+        viz.dispose();
+      }
 
       viz = new tableau.Viz(containerDiv, vizUrl, options);
     }
@@ -63,23 +64,28 @@
       }
     }
 
-    $(document).ready(function () {
-      // Load addresses from JSON file
-      fetch("addresses.json")
+    document.addEventListener("DOMContentLoaded", () => {
+      // Load addresses from GitHub Pages-hosted addresses.json
+      fetch("https://charismaclearr.github.io/property-dashboard/addresses.json")
         .then(response => response.json())
         .then(addresses => {
           $("#addressInput").autocomplete({
             source: addresses,
             select: function (event, ui) {
               const selectedAddress = ui.item.value;
-              setAddressParameter(selectedAddress);
+              console.log("Selected:", selectedAddress);
+              if (typeof tableau !== "undefined") {
+                loadTableauDashboard(selectedAddress);
+              } else {
+                console.error("Tableau JS API not loaded.");
+              }
             }
           });
+        })
+        .catch(err => {
+          console.error("Failed to load addresses.json:", err);
         });
-
-      loadTableauDashboard();
     });
   </script>
-
 </body>
 </html>
