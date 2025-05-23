@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Property Dashboard</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/awesomplete/1.1.5/awesomplete.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+    }
+    #popup {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(0, 0, 0, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+    #popup-content {
+      background-color: white;
+      padding: 2rem;
+      border-radius: 8px;
+      text-align: center;
+    }
+    #tableauDashboard {
+      margin-top: 2rem;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<div id="popup">
+  <div id="popup-content">
+    <h2>Enter Your Address</h2>
+    <input id="addressInput" class="awesomplete" list="addressList" placeholder="Start typing address..." autocomplete="off" />
+    <datalist id="addressList"></datalist>
+    <br><br>
+    <button onclick="loadDashboard()">Submit</button>
+  </div>
+</div>
+
+<div id="tableauDashboard">
+  <h2>Dashboard for <span id="selectedAddress"></span></h2>
+  <div id="vizContainer" style="width:100%; height:800px;"></div>
+</div>
+
+<script>
+  let addressList = [];
+
+  // Load the address list
+  fetch("addresses.json")
+    .then(res => res.json())
+    .then(data => {
+      addressList = data;
+
+      new Awesomplete('#addressInput', {
+        list: addressList,
+        minChars: 2
+      });
+
+      // Optional fallback for browsers not supporting Awesomplete
+      const datalist = document.getElementById('addressList');
+      data.forEach(address => {
+        const option = document.createElement('option');
+        option.value = address;
+        datalist.appendChild(option);
+      });
+    });
+
+  function loadDashboard() {
+    const selectedAddress = document.getElementById("addressInput").value.trim();
+
+    if (!addressList.includes(selectedAddress)) {
+      alert("Please select a valid address from the suggestions.");
+      return;
+    }
+
+    document.getElementById("popup").style.display = "none";
+    document.getElementById("tableauDashboard").style.display = "block";
+    document.getElementById("selectedAddress").innerText = selectedAddress;
+
+    // Embed Tableau dashboard
+    const placeholderDiv = document.getElementById("vizContainer");
+
+    const url = "<script type='module' src='https://prod-apsoutheast-a.online.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js'></script><tableau-viz id='tableau-viz' src='https://prod-apsoutheast-a.online.tableau.com/t/clearrtableau/views/AddressDashboard/MapDashboard' width='1000' height='840' hide-tabs toolbar='bottom' ></tableau-viz>"; 
+    const options = {
+      hideTabs: true,
+      width: "100%",
+      height: "800px",
+      onFirstInteractive: function () {
+        const sheet = viz.getWorkbook().getActiveSheet();
+        // If it's a dashboard with multiple sheets
+        if (sheet.getSheets) {
+          const targetSheet = sheet.getSheets().find(s => s.getName() === "Your Sheet Name"); // optional
+          if (targetSheet) {
+            targetSheet.applyFilterAsync("FullAddress", selectedAddress, tableau.FilterUpdateType.REPLACE);
+          }
+        } else {
+          sheet.applyFilterAsync("FullAddress", selectedAddress, tableau.FilterUpdateType.REPLACE);
+        }
+      }
+    };
+
+    const viz = new tableau.Viz(placeholderDiv, url, options);
+  }
+</script>
+
+<script src="https://public.tableau.com/javascripts/api/tableau-2.min.js"></script>
+
+</body>
+</html>
