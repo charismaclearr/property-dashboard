@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <title>Property Dashboard</title>
-  <!-- jQuery UI CSS -->
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" />
   <style>
     body { font-family: Arial, sans-serif; margin: 20px; }
@@ -21,8 +20,8 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 
-  <!-- Tableau Embedding API v3: classic script tag, DO NOT use type="module" -->
- <script src="https://embedding.tableauusercontent.com/tableau.embedding.3.latest.js"></script>
+  <!-- Tableau Embedding API v3: use the latest .js or .latest.min.js, NO type="module" -->
+  <script src="https://embedding.tableauusercontent.com/tableau.embedding.3.latest.js"></script>
 
   <script>
     const vizContainer = document.getElementById('vizContainer');
@@ -43,7 +42,6 @@
 
     function loadTableauDashboard(address) {
       vizContainer.innerHTML = '';
-      // Use the exact Tableau parameter name, URL-encoded
       const baseUrl = "https://prod-apsoutheast-a.online.tableau.com/t/clearrtableau/views/AddressDashboard/MapDashboard";
       const paramStr = `?:embed=y&:showVizHome=no&FullAddress%20Parameter=${encodeURIComponent(address)}`;
       const tableauViz = document.createElement('tableau-viz');
