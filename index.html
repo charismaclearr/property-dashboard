@@ -59,7 +59,7 @@
       suggestionsContainer.innerHTML = '';
       if (query.length === 0) return;
 
-      const matches = addresses.filter(addr => addr.toLowerCase().includes(query));
+      const matches = addresses.filter(addr => addr.toLowerCase().includes(query.toLowerCase()));
 
       matches.forEach(match => {
         const div = document.createElement('div');
