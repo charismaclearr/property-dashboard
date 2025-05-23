@@ -71,17 +71,50 @@
       font-weight: 400;
       margin-top: 0;
     }
-    #addressInput {
-      width: 320px;
-      padding: 8px 12px;
-      font-size: 1rem;
-      border: 1px solid #bbb;
-      border-radius: 6px;
-      margin-bottom: 18px;
-      box-shadow: 0 1px 5px rgba(0,0,0,0.04);
-      text-align: center;
-      background: #fff;
-    }
+    .address-bar {
+		  display: flex;
+		  align-items: center;
+		  justify-content: center;
+		  margin-bottom: 18px;
+		  gap: 8px;
+		}
+
+		#addressInput,
+		#goButton {
+		  height: 44px; /* Set the same height */
+		  font-size: 1rem;
+		  border: 1px solid #bbb;
+		  border-radius: 6px;
+		  box-shadow: 0 1px 5px rgba(0,0,0,0.04);
+		  box-sizing: border-box;
+		  background: #fff;
+		}
+
+		#addressInput {
+		  width: 320px;
+		  padding: 8px 12px;
+		  text-align: center;
+		  margin-bottom: 0;
+		  transition: border 0.2s;
+		}
+
+		#goButton {
+		  padding: 0 20px; /* Remove vertical padding, only horizontal */
+		  color: #222;
+		  cursor: pointer;
+		  transition: background 0.2s, border 0.2s;
+		  margin-left: 0;
+		  display: flex;
+		  align-items: center;
+		  justify-content: center;
+		}
+
+#goButton:hover, #goButton:focus {
+  background: #f0f4fa;
+  border-color: #0074d9;
+  outline: none;
+}
+
     #vizContainer {
       margin-top: 0;
       display: flex;
@@ -159,7 +192,9 @@
       .header-logo { left: 4px; }
       .header-logo img { height: 30px; }
       .header-title { font-size: 1.02rem; }
-      #addressInput { width: 90vw; }
+      .address-bar { gap: 6px; }
+      #addressInput { width: 60vw; min-width: 0; }
+      #goButton { padding: 8px 12px; font-size: 0.98rem; height: 38px; }
       h2 { font-size: 0.95rem; }
       .header { height: 48px; }
       .footer-bottom { padding: 24px 0 10px 0; }
@@ -177,8 +212,10 @@
   </header>
   <div class="container">
     <h2>Find property insights by entering an address below</h2>
-    <input type="text" id="addressInput" placeholder="Start typing an address..." autocomplete="off" />
-	<button onclick="loadTableauDashboard()">go!</button>
+    <div class="address-bar">
+      <input type="text" id="addressInput" placeholder="Start typing an address..." autocomplete="off" />
+      <button id="goButton" onclick="loadTableauDashboard()">Search</button>
+    </div>
     <div id="vizContainer"></div>
   </div>
 
@@ -201,7 +238,7 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
   <script>
-	var selectedAddr = "";
+    var selectedAddr = "";
     // Load addresses for autocomplete
     fetch('https://charismaclearr.github.io/property-dashboard/addresses.json')
       .then(res => res.json())
@@ -209,9 +246,7 @@
         $('#addressInput').autocomplete({
           source: addresses,
           select: function(event, ui) {
-            //const selectedAddress = ui.item.value;
-			selectedAddr = ui.item.value;
-            //loadTableauDashboard(selectedAddress);
+            selectedAddr = ui.item.value;
           }
         });
       })
@@ -223,22 +258,20 @@
     $('#addressInput').on('change', function() {
       const enteredAddress = $(this).val();
       if (enteredAddress.trim().length > 0) {
-        //loadTableauDashboard(enteredAddress);
+        selectedAddr = enteredAddress;
       }
     });
 
-	
     function loadTableauDashboard() {
-		if (selectedAddr != null && selectedAddr.trim() != "") {
-			const paramName = 'FullAddress%20Parameter';
-		  const paramValue = encodeURIComponent(selectedAddr);
-		  const baseUrl = 'https://public.tableau.com/views/AddressDashboard_17479873620460/MapDashboard';
-		  const params = `?:embed=y&:showVizHome=no&${paramName}=${paramValue}`;
-		  const fullUrl = `${baseUrl}${params}`;
-		  document.getElementById('vizContainer').innerHTML =
-			`<iframe src="${fullUrl}" width="1000" height="827" allowfullscreen></iframe>`;
-		}
-      
+      if (selectedAddr != null && selectedAddr.trim() != "") {
+        const paramName = 'FullAddress%20Parameter';
+        const paramValue = encodeURIComponent(selectedAddr);
+        const baseUrl = 'https://public.tableau.com/views/AddressDashboard_17479873620460/MapDashboard';
+        const params = `?:embed=y&:showVizHome=no&${paramName}=${paramValue}`;
+        const fullUrl = `${baseUrl}${params}`;
+        document.getElementById('vizContainer').innerHTML =
+          `<iframe src="${fullUrl}" width="1000" height="827" allowfullscreen></iframe>`;
+      }
     }
   </script>
 </body>
