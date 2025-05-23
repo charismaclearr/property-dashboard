@@ -178,6 +178,7 @@
   <div class="container">
     <h2>Find property insights by entering an address below</h2>
     <input type="text" id="addressInput" placeholder="Start typing an address..." autocomplete="off" />
+	<button onclick="loadTableauDashboard()">go!</button>
     <div id="vizContainer"></div>
   </div>
 
@@ -200,6 +201,7 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
   <script>
+	var selectedAddr = "";
     // Load addresses for autocomplete
     fetch('https://charismaclearr.github.io/property-dashboard/addresses.json')
       .then(res => res.json())
@@ -207,8 +209,9 @@
         $('#addressInput').autocomplete({
           source: addresses,
           select: function(event, ui) {
-            const selectedAddress = ui.item.value;
-            loadTableauDashboard(selectedAddress);
+            //const selectedAddress = ui.item.value;
+			selectedAddr = ui.item.value;
+            //loadTableauDashboard(selectedAddress);
           }
         });
       })
@@ -220,18 +223,22 @@
     $('#addressInput').on('change', function() {
       const enteredAddress = $(this).val();
       if (enteredAddress.trim().length > 0) {
-        loadTableauDashboard(enteredAddress);
+        //loadTableauDashboard(enteredAddress);
       }
     });
 
-    function loadTableauDashboard(address) {
-      const paramName = 'FullAddress%20Parameter';
-      const paramValue = encodeURIComponent(address);
-      const baseUrl = 'https://public.tableau.com/views/AddressDashboard_17479873620460/MapDashboard';
-      const params = `?:embed=y&:showVizHome=no&${paramName}=${paramValue}`;
-      const fullUrl = `${baseUrl}${params}`;
-      document.getElementById('vizContainer').innerHTML =
-        `<iframe src="${fullUrl}" width="1000" height="827" allowfullscreen></iframe>`;
+	
+    function loadTableauDashboard() {
+		if (selectedAddr != null && selectedAddr.trim() != "") {
+			const paramName = 'FullAddress%20Parameter';
+		  const paramValue = encodeURIComponent(selectedAddr);
+		  const baseUrl = 'https://public.tableau.com/views/AddressDashboard_17479873620460/MapDashboard';
+		  const params = `?:embed=y&:showVizHome=no&${paramName}=${paramValue}`;
+		  const fullUrl = `${baseUrl}${params}`;
+		  document.getElementById('vizContainer').innerHTML =
+			`<iframe src="${fullUrl}" width="1000" height="827" allowfullscreen></iframe>`;
+		}
+      
     }
   </script>
 </body>
