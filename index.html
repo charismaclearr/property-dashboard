@@ -20,7 +20,7 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 
-  <!-- Tableau Embedding API v3: use latest .js, no type="module" -->
+  <!-- Tableau Embedding API v3 for tableau-viz web component -->
   <script src="https://embedding.tableauusercontent.com/tableau.embedding.3.latest.js"></script>
 
   <script>
@@ -33,8 +33,7 @@
           select: function(event, ui) {
             const selectedAddress = ui.item.value;
             loadTableauDashboard(selectedAddress);
-            // For troubleshooting: also try the iframe method
-            loadTableauIframe(selectedAddress);
+            loadTableauIframe(selectedAddress); // For troubleshooting
           }
         });
       })
@@ -43,9 +42,10 @@
       });
 
     function loadTableauDashboard(address) {
-      // Clear existing viz
       vizContainer.innerHTML = '';
-      const baseUrl = "https://prod-apsoutheast-a.online.tableau.com/t/clearrtableau/views/AddressDashboard/MapDashboard";
+      // Tableau Public parameter names are case- and space-sensitive
+      const baseUrl = "https://public.tableau.com/views/AddressDashboard_17479873620460/MapDashboard";
+      // Use the correct parameter name as defined in your Tableau Public dashboard
       const paramStr = `?:embed=y&:showVizHome=no&FullAddress%20Parameter=${encodeURIComponent(address)}`;
       const tableauViz = document.createElement('tableau-viz');
       tableauViz.id = 'tableau-viz';
@@ -57,9 +57,9 @@
       vizContainer.appendChild(tableauViz);
     }
 
-    // Troubleshooting: also embed using an iframe to isolate Tableau issues
+    // For troubleshooting: show the iframe as well
     function loadTableauIframe(address) {
-      const baseUrl = "https://prod-apsoutheast-a.online.tableau.com/t/clearrtableau/views/AddressDashboard/MapDashboard";
+      const baseUrl = "https://public.tableau.com/views/AddressDashboard_17479873620460/MapDashboard";
       const paramStr = `?:embed=y&:showVizHome=no&FullAddress%20Parameter=${encodeURIComponent(address)}`;
       const iframe = document.createElement('iframe');
       iframe.src = baseUrl + paramStr;
