@@ -19,32 +19,56 @@
       justify-content: flex-start;
       align-items: stretch;
     }
+    .header {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 80px;
+      background: #fff;
+      border-bottom: 1px solid #ececec;
+      position: relative;
+      box-sizing: border-box;
+      margin-bottom: 10px;
+    }
+    .header-logo {
+      position: absolute;
+      left: 32px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      align-items: center;
+      height: 100%;
+    }
+    .header-logo img {
+      height: 54px;
+      width: auto;
+      display: block;
+    }
+    .header-title {
+      flex: 1;
+      text-align: center;
+      font-size: 2.1rem;
+      font-weight: 600;
+      color: #1a1a1a;
+      letter-spacing: 1px;
+      line-height: 1;
+    }
     .container {
       flex: 1 0 auto;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       padding-bottom: 40px;
-    }
-    #ClearRLogo {
-      width: 180px;
-      margin: 40px 0 10px 0;
-      display: block;
-    }
-    h1 {
-      text-align: center;
-      font-size: 2.5rem;
-      margin-bottom: 10px;
-      color: #1a1a1a;
-      letter-spacing: 1px;
     }
     h2 {
       text-align: center;
-      font-size: 1.3rem;
+      font-size: 1.25rem;
       color: #444;
       margin-bottom: 20px;
       font-weight: 400;
+      margin-top: 30px;
     }
     #addressInput {
       width: 340px;
@@ -70,6 +94,7 @@
       background: #fff;
       margin: 0 auto;
       display: block;
+      max-width: 100%;
     }
     /* Footer styles */
     .footer-bottom, .footer-top {
@@ -110,17 +135,26 @@
       iframe { width: 95vw; min-width: 320px; }
     }
     @media (max-width: 600px) {
+      .header-logo { left: 8px; }
+      .header-logo img { height: 38px; }
+      .header-title { font-size: 1.1rem; }
       #addressInput { width: 90vw; }
       .contact-box { padding: 12px 8px; min-width: unset; }
-      h1 { font-size: 1.7rem; }
       h2 { font-size: 1.05rem; }
+      .header { height: 54px; }
     }
   </style>
 </head>
 <body>
+  <header class="header">
+    <div class="header-logo">
+      <img src="https://www.clearr.com.au/clearr-logo.jpg" alt="Company Logo" id="ClearRLogo">
+    </div>
+    <div class="header-title">
+      ClearR Property Dashboard
+    </div>
+  </header>
   <div class="container">
-    <img src="https://www.clearr.com.au/clearr-logo.jpg" alt="Company Logo" id="ClearRLogo">
-    <h1>ClearR Property Dashboard</h1>
     <h2>Find property insights by entering an address below</h2>
     <input type="text" id="addressInput" placeholder="Start typing an address..." autocomplete="off" />
     <div id="vizContainer"></div>
@@ -170,15 +204,15 @@
     });
 
     function loadTableauDashboard(address) {
-  const paramName = 'FullAddress%20Parameter';
-  const paramValue = encodeURIComponent(address);
-  const baseUrl = 'https://public.tableau.com/views/AddressDashboard_17479873620460/MapDashboard';
-  // Add :toolbar=no to the parameters
-  const params = `?:embed=y&:showVizHome=no&:toolbar=no&${paramName}=${paramValue}`;
-  const fullUrl = `${baseUrl}${params}`;
-  document.getElementById('vizContainer').innerHTML =
-    `<iframe src="${fullUrl}" width="1000" height="827" allowfullscreen></iframe>`;
-}
+      const paramName = 'FullAddress%20Parameter';
+      const paramValue = encodeURIComponent(address);
+      const baseUrl = 'https://public.tableau.com/views/AddressDashboard_17479873620460/MapDashboard';
+      // Add :toolbar=no if you want to attempt to hide toolbar (won't work on Tableau Public)
+      const params = `?:embed=y&:showVizHome=no&${paramName}=${paramValue}`;
+      const fullUrl = `${baseUrl}${params}`;
+      document.getElementById('vizContainer').innerHTML =
+        `<iframe src="${fullUrl}" width="1000" height="827" allowfullscreen></iframe>`;
+    }
   </script>
 </body>
 </html>
