@@ -5,20 +5,27 @@
   <title>ClearR Property Dashboard</title>
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" />
   <style>
-    body {
-      font-family: 'Segoe UI', Arial, sans-serif;
+    html, body {
+      height: 100%;
       margin: 0;
       padding: 0;
       background: #f7f8fa;
       color: #222;
     }
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: stretch;
+    }
     .container {
+      flex: 1 0 auto;
       display: flex;
       flex-direction: column;
       align-items: center;
-      min-height: 80vh;
       justify-content: center;
-      padding-bottom: 60px;
+      padding-bottom: 40px;
     }
     #ClearRLogo {
       width: 180px;
