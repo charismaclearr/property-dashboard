@@ -8,7 +8,7 @@
     body { font-family: Arial, sans-serif; margin: 20px; }
     #addressInput { width: 300px; padding: 8px; font-size: 16px; }
     #vizContainer { margin-top: 30px; }
-    tableau-viz, iframe { width: 1000px; height: 840px; display: block; }
+    .tableauPlaceholder { width: 1000px; height: 827px; }
   </style>
 </head>
 <body>
@@ -20,11 +20,15 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 
-  <!-- Tableau Embedding API v3 for tableau-viz web component -->
-  <script src="https://embedding.tableauusercontent.com/tableau.embedding.3.latest.js"></script>
-
   <script>
     const vizContainer = document.getElementById('vizContainer');
+    const tableauDivId = 'viz1747987821406';
+    const baseName = 'AddressDashboard_17479873620460/MapDashboard';
+    const tableauHost = 'https%3A%2F%2Fpublic.tableau.com%2F';
+    const staticImg = 'https://public.tableau.com/static/images/Ad/AddressDashboard_17479873620460/MapDashboard/1.png';
+    const staticImgRss = 'https://public.tableau.com/static/images/Ad/AddressDashboard_17479873620460/MapDashboard/1_rss.png';
+
+    // Load addresses for autocomplete
     fetch('https://charismaclearr.github.io/property-dashboard/addresses.json')
       .then(res => res.json())
       .then(addresses => {
@@ -33,7 +37,6 @@
           select: function(event, ui) {
             const selectedAddress = ui.item.value;
             loadTableauDashboard(selectedAddress);
-            loadTableauIframe(selectedAddress); // For troubleshooting
           }
         });
       })
@@ -43,31 +46,51 @@
 
     function loadTableauDashboard(address) {
       vizContainer.innerHTML = '';
-      // Tableau Public parameter names are case- and space-sensitive
-      const baseUrl = "https://public.tableau.com/views/AddressDashboard_17479873620460/MapDashboard";
-      // Use the correct parameter name as defined in your Tableau Public dashboard
-      const paramStr = `?:embed=y&:showVizHome=no&FullAddress%20Parameter=${encodeURIComponent(address)}`;
-      const tableauViz = document.createElement('tableau-viz');
-      tableauViz.id = 'tableau-viz';
-      tableauViz.src = baseUrl + paramStr;
-      tableauViz.setAttribute('width', '1000');
-      tableauViz.setAttribute('height', '840');
-      tableauViz.setAttribute('hide-tabs', '');
-      tableauViz.setAttribute('toolbar', 'bottom');
-      vizContainer.appendChild(tableauViz);
-    }
+      // URL encode parameter name and value
+      const paramName = 'FullAddress%20Parameter';
+      const paramValue = encodeURIComponent(address);
+      const nameParam = `${baseName}?:embed=y&${paramName}=${paramValue}`;
 
-    // For troubleshooting: show the iframe as well
-    function loadTableauIframe(address) {
-      const baseUrl = "https://public.tableau.com/views/AddressDashboard_17479873620460/MapDashboard";
-      const paramStr = `?:embed=y&:showVizHome=no&FullAddress%20Parameter=${encodeURIComponent(address)}`;
-      const iframe = document.createElement('iframe');
-      iframe.src = baseUrl + paramStr;
-      iframe.width = "1000";
-      iframe.height = "840";
-      iframe.style.display = "block";
-      iframe.style.marginTop = "20px";
-      vizContainer.appendChild(iframe);
+      // Build embed code
+      const embedHtml = `
+        <div class='tableauPlaceholder' id='${tableauDivId}' style='position: relative'>
+          <noscript>
+            <a href='#'>
+              <img alt='Map Dashboard ' src='${staticImgRss}' style='border: none' />
+            </a>
+          </noscript>
+          <object class='tableauViz' style='display:none;'>
+            <param name='host_url' value='${tableauHost}' />
+            <param name='embed_code_version' value='3' />
+            <param name='site_root' value='' />
+            <param name='name' value='${nameParam}' />
+            <param name='tabs' value='no' />
+            <param name='toolbar' value='yes' />
+            <param name='static_image' value='${staticImg}' />
+            <param name='animate_transition' value='yes' />
+            <param name='display_static_image' value='yes' />
+            <param name='display_spinner' value='yes' />
+            <param name='display_overlay' value='yes' />
+            <param name='display_count' value='yes' />
+            <param name='language' value='en-US' />
+          </object>
+        </div>
+        <script type='text/javascript'>
+          var divElement = document.getElementById('${tableauDivId}');
+          var vizElement = divElement.getElementsByTagName('object')[0];
+          if (divElement.offsetWidth > 800) {
+            vizElement.style.width='1000px';vizElement.style.height='827px';
+          } else if (divElement.offsetWidth > 500) {
+            vizElement.style.width='1000px';vizElement.style.height='827px';
+          } else {
+            vizElement.style.width='100%';vizElement.style.height='727px';
+          }
+          var scriptElement = document.createElement('script');
+          scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';
+          vizElement.parentNode.insertBefore(scriptElement, vizElement);
+        <\/script>
+      `;
+      vizContainer.innerHTML = embedHtml;
     }
   </script>
 </body>
