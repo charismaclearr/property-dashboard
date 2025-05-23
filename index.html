@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Property Dashboard</title>
-  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" />
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -23,22 +23,44 @@
 </head>
 <body>
   <h2>Enter an Address</h2>
-  <input type="text" id="addressInput" placeholder="Start typing an address...">
-
+  <input type="text" id="addressInput" placeholder="Start typing an address..." />
   <div id="vizContainer"></div>
 
-  <!-- jQuery and jQuery UI for autocomplete -->
+  <!-- jQuery and jQuery UI -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 
-  <!-- Tableau JS API (clean, non-blocking) -->
-  <script async src="https://public.tableau.com/javascripts/api/tableau-2.min.js"></script>
+  <!-- Tableau JS API (load safely with callback) -->
+  <script>
+    let tableauLoaded = false;
+    let tableauReadyQueue = [];
+
+    function whenTableauReady(callback) {
+      if (tableauLoaded) {
+        callback();
+      } else {
+        tableauReadyQueue.push(callback);
+      }
+    }
+
+    function onTableauScriptLoaded() {
+      tableauLoaded = true;
+      tableauReadyQueue.forEach(cb => cb());
+      tableauReadyQueue = [];
+    }
+
+    // Dynamically load Tableau JS API
+    const script = document.createElement('script');
+    script.src = 'https://public.tableau.com/javascripts/api/tableau-2.min.js';
+    script.onload = onTableauScriptLoaded;
+    document.head.appendChild(script);
+  </script>
 
   <script>
     let viz;
 
     function loadTableauDashboard(address) {
-      const vizUrl = "https://prod-apsoutheast-a.online.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js'></script><tableau-viz id='tableau-viz' src='https://prod-apsoutheast-a.online.tableau.com/t/clearrtableau/views/AddressDashboard/MapDashboard?:embed=y&:showVizHome=no' width='1000' height='840' hide-tabs toolbar='bottom' ></tableau-viz>"; // Replace with your actual Tableau Online URL
+      const vizUrl = "https://prod-apsoutheast-a.online.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js'></script><tableau-viz id='tableau-viz' src='https://prod-apsoutheast-a.online.tableau.com/t/clearrtableau/views/AddressDashboard/MapDashboard?:embed=y&:showVizHome=no' width='1000' height='840' hide-tabs toolbar='bottom' ></tableau-viz>"; // Replace this
       const containerDiv = document.getElementById("vizContainer");
 
       const options = {
@@ -65,7 +87,6 @@
     }
 
     document.addEventListener("DOMContentLoaded", () => {
-      // Load addresses from GitHub Pages-hosted addresses.json
       fetch("https://charismaclearr.github.io/property-dashboard/addresses.json")
         .then(response => response.json())
         .then(addresses => {
@@ -74,11 +95,7 @@
             select: function (event, ui) {
               const selectedAddress = ui.item.value;
               console.log("Selected:", selectedAddress);
-              if (typeof tableau !== "undefined") {
-                loadTableauDashboard(selectedAddress);
-              } else {
-                console.error("Tableau JS API not loaded.");
-              }
+              whenTableauReady(() => loadTableauDashboard(selectedAddress));
             }
           });
         })
@@ -89,3 +106,4 @@
   </script>
 </body>
 </html>
+
