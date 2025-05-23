@@ -98,28 +98,32 @@
     }
     /* Footer styles */
     .footer-bottom {
-        padding: 60px 0 20px 0; /* increase top padding to 60px and bottom to 20px */
-        position: relative;
-        background: #222;
-        color: #fff;
-        text-align: center;
-        font-size: 1rem;
-        width: 100%;
-        box-sizing: border-box;
-      }
-      
-      .contact-box {
-        margin-top: -36px; /* keep this if you want the overlap effect */
-        padding: 18px 30px;
-        background: #fff;
-        color: #222;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-        display: inline-block;
-        font-size: 1rem;
-        line-height: 1.7;
-        min-width: 260px;
-      }
+      width: 100%;
+      text-align: center;
+      background: #222;
+      color: #fff;
+      padding: 60px 0 28px 0; /* Increased top and bottom padding */
+      position: relative;
+      font-size: 1.08rem;
+      box-sizing: border-box;
+    }
+    .footer-content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .contact-box {
+      background: #fff;
+      color: #222;
+      padding: 22px 38px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      margin-top: -46px; /* Overlap effect, but fits within the new padding */
+      display: inline-block;
+      font-size: 1.08rem;
+      line-height: 1.7;
+      min-width: 260px;
+    }
     .footer-top {
       background: #111;
       color: #bbb;
@@ -136,9 +140,11 @@
       .header-logo img { height: 38px; }
       .header-title { font-size: 1.1rem; }
       #addressInput { width: 90vw; }
-      .contact-box { padding: 12px 8px; min-width: unset; }
+      .contact-box { padding: 14px 6px; min-width: unset; }
       h2 { font-size: 1.05rem; }
       .header { height: 54px; }
+      .footer-bottom { padding: 44px 0 18px 0; }
+      .contact-box { margin-top: -30px; }
     }
   </style>
 </head>
@@ -204,7 +210,6 @@
       const paramName = 'FullAddress%20Parameter';
       const paramValue = encodeURIComponent(address);
       const baseUrl = 'https://public.tableau.com/views/AddressDashboard_17479873620460/MapDashboard';
-      // Add :toolbar=no if you want to attempt to hide toolbar (won't work on Tableau Public)
       const params = `?:embed=y&:showVizHome=no&${paramName}=${paramValue}`;
       const fullUrl = `${baseUrl}${params}`;
       document.getElementById('vizContainer').innerHTML =
