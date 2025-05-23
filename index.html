@@ -43,6 +43,24 @@
       height: 44px;
       width: auto;
       display: block;
+	.header-logo-right {
+	  position: absolute;
+	  right: 18px;
+	  top: 50%;
+	  transform: translateY(-50%);
+	  display: flex;
+	  align-items: center;
+	  height: 100%;
+	}
+	.header-logo-right img {
+	  height: 44px;
+	  width: auto;
+	  display: block;
+	}
+	@media (max-width: 600px) {
+	  .header-logo-right { right: 4px; }
+	  .header-logo-right img { height: 30px; }
+	}
     }
     .header-title {
       flex: 1;
@@ -203,13 +221,16 @@
 </head>
 <body>
   <header class="header">
-    <div class="header-logo">
-      <img src="https://www.clearr.com.au/clearr-logo.jpg" alt="Company Logo" id="ClearRLogo">
-    </div>
-    <div class="header-title">
-      ClearR Property Dashboard
-    </div>
-  </header>
+  <div class="header-logo">
+    <img src="https://www.clearr.com.au/clearr-logo.jpg" alt="Company Logo" id="ClearRLogo">
+  </div>
+  <div class="header-title">
+    ClearR Maps Tableau Dashboard - Proof of Concept
+  </div>
+  <div class="header-logo-right">
+    <img src="https://www.tableau.com/themes/custom/tableau_www/logo.v2.svg" alt="Tableau Logo" id="TableauLogo">
+  </div>
+</header>
   <div class="container">
     <h2>Find nearby fast food options by entering an address below</h2>
     <div class="address-bar">
