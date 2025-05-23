@@ -170,14 +170,15 @@
     });
 
     function loadTableauDashboard(address) {
-      const paramName = 'FullAddress%20Parameter';
-      const paramValue = encodeURIComponent(address);
-      const baseUrl = 'https://public.tableau.com/views/AddressDashboard_17479873620460/MapDashboard';
-      const params = `?:embed=y&:showVizHome=no&${paramName}=${paramValue}`;
-      const fullUrl = `${baseUrl}${params}`;
-      document.getElementById('vizContainer').innerHTML =
-        `<iframe src="${fullUrl}" width="1000" height="827" allowfullscreen></iframe>`;
-    }
+  const paramName = 'FullAddress%20Parameter';
+  const paramValue = encodeURIComponent(address);
+  const baseUrl = 'https://public.tableau.com/views/AddressDashboard_17479873620460/MapDashboard';
+  // Add :toolbar=no to the parameters
+  const params = `?:embed=y&:showVizHome=no&:toolbar=no&${paramName}=${paramValue}`;
+  const fullUrl = `${baseUrl}${params}`;
+  document.getElementById('vizContainer').innerHTML =
+    `<iframe src="${fullUrl}" width="1000" height="827" allowfullscreen></iframe>`;
+}
   </script>
 </body>
 </html>
