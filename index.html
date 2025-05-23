@@ -88,7 +88,7 @@
       }
 
       // Replace with your Tableau viz URL
-      const placeholderUrl = "https://public.tableau.com/views/YourDashboardName/YourViewName";
+      const placeholderUrl = "https://prod-apsoutheast-a.online.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js'></script><tableau-viz id='tableau-viz' src='https://prod-apsoutheast-a.online.tableau.com/t/clearrtableau/views/AddressDashboard/MapDashboard?:embed=y&:showVizHome=no' width='1000' height='840' hide-tabs toolbar='bottom' ></tableau-viz>";
 
       const options = {
         hideTabs: true,
@@ -107,7 +107,6 @@
         const activeSheet = workbook.getActiveSheet();
 
         if (activeSheet.getSheetType() === 'dashboard') {
-          // Assuming your dashboard filter is named 'FullAddress'
           activeSheet.applyFilterAsync('FullAddress', address, tableau.FilterUpdateType.REPLACE);
         } else {
           console.warn('Active sheet is not a dashboard, filter not applied.');
