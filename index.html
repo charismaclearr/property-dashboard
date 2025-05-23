@@ -22,7 +22,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 72px; /* Slightly taller for stability */
+      height: 72px;
       background: #fff;
       border-bottom: 1px solid #ececec;
       position: relative;
@@ -100,13 +100,13 @@
     /* Footer styles */
     .footer-bottom {
       width: 100%;
-      text-align: center;
       background: #222;
       color: #fff;
-      padding: 38px 0 18px 0; /* Reduced top padding */
-      position: relative;
-      font-size: 1.08rem;
+      padding: 30px 0 18px 0;
+      text-align: center;
       box-sizing: border-box;
+      position: relative;
+      font-size: 1rem;
     }
     .footer-content {
       display: flex;
@@ -116,33 +116,53 @@
     .contact-box {
       background: #fff;
       color: #222;
-      padding: 16px 22px;
-      border-radius: 10px;
+      padding: 14px 24px;
+      border-radius: 8px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-      margin-top: -24px; /* Less overlap */
-      display: inline-block;
-      font-size: 1.08rem;
-      line-height: 1.6;
-      min-width: 220px;
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      align-items: center;
+      font-size: 1rem;
+      line-height: 1.5;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .contact-box span {
+      white-space: nowrap;
+    }
+    .contact-box .contact-item {
+      font-weight: 400;
     }
     .footer-top {
       background: #111;
       color: #bbb;
-      padding: 6px 0;
-      font-size: 0.95rem;
+      padding: 8px 0;
+      font-size: 0.9rem;
       border-top: 1px solid #222;
       margin-top: 0;
     }
+    /* Responsive adjustments */
     @media (max-width: 600px) {
+      .footer-content {
+        justify-content: center;
+      }
+      .contact-box {
+        flex-direction: column;
+        gap: 12px;
+        padding: 12px 16px;
+      }
+      .contact-box span {
+        white-space: normal;
+        text-align: center;
+      }
       .header-logo { left: 4px; }
       .header-logo img { height: 30px; }
       .header-title { font-size: 1.02rem; }
       #addressInput { width: 90vw; }
-      .contact-box { padding: 10px 4px; min-width: unset; }
       h2 { font-size: 0.95rem; }
       .header { height: 48px; }
       .footer-bottom { padding: 24px 0 10px 0; }
-      .contact-box { margin-top: -14px; }
     }
   </style>
 </head>
@@ -165,10 +185,10 @@
   <div class="footer-bottom">
     <div class="footer-content">
       <div class="contact-box">
-        <strong>Get in Touch</strong><br>
-        <span>1300 341 391</span><br>
-        <span>info@clearr.com.au</span><br>
-        <span>Sydney Place, Level 22, 180 George Street, Sydney 2000</span>
+        <span><strong>Get in Touch:</strong></span>
+        <span class="contact-item">1300 341 391</span>
+        <span class="contact-item">info@clearr.com.au</span>
+        <span class="contact-item">Sydney Place, Level 22, 180 George Street, Sydney 2000</span>
       </div>
     </div>
   </div>
