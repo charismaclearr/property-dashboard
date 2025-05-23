@@ -2,24 +2,141 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Property Dashboard</title>
+  <title>ClearR Property Dashboard</title>
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" />
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    #addressInput { width: 300px; padding: 8px; font-size: 16px; }
-    #vizContainer { margin-top: 30px; }
-    iframe { width: 1000px; height: 827px; border: none; display: block; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f7f8fa;
+      color: #222;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 80vh;
+      justify-content: center;
+      padding-bottom: 60px;
+    }
+    #ClearRLogo {
+      width: 180px;
+      margin: 40px 0 10px 0;
+      display: block;
+    }
+    h1 {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      color: #1a1a1a;
+      letter-spacing: 1px;
+    }
+    h2 {
+      text-align: center;
+      font-size: 1.3rem;
+      color: #444;
+      margin-bottom: 20px;
+      font-weight: 400;
+    }
+    #addressInput {
+      width: 340px;
+      padding: 10px 14px;
+      font-size: 1.1rem;
+      border: 1px solid #bbb;
+      border-radius: 6px;
+      margin-bottom: 30px;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.04);
+      text-align: center;
+      background: #fff;
+    }
+    #vizContainer {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+    iframe {
+      border: none;
+      border-radius: 10px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+      background: #fff;
+      margin: 0 auto;
+      display: block;
+    }
+    /* Footer styles */
+    .footer-bottom, .footer-top {
+      width: 100%;
+      text-align: center;
+      background: #222;
+      color: #fff;
+      padding: 18px 0 8px 0;
+      position: relative;
+      font-size: 1rem;
+    }
+    .footer-content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .contact-box {
+      background: #fff;
+      color: #222;
+      padding: 18px 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+      margin-top: -36px;
+      display: inline-block;
+      font-size: 1rem;
+      line-height: 1.7;
+      min-width: 260px;
+    }
+    .footer-top {
+      background: #111;
+      color: #bbb;
+      padding: 8px 0;
+      font-size: 0.95rem;
+      border-top: 1px solid #222;
+      margin-top: 0;
+    }
+    @media (max-width: 1100px) {
+      iframe { width: 95vw; min-width: 320px; }
+    }
+    @media (max-width: 600px) {
+      #addressInput { width: 90vw; }
+      .contact-box { padding: 12px 8px; min-width: unset; }
+      h1 { font-size: 1.7rem; }
+      h2 { font-size: 1.05rem; }
+    }
   </style>
 </head>
 <body>
-  <h2>Enter an Address</h2>
-  <input type="text" id="addressInput" placeholder="Start typing an address..." />
-  <div id="vizContainer"></div>
+  <div class="container">
+    <img src="https://www.clearr.com.au/clearr-logo.jpg" alt="Company Logo" id="ClearRLogo">
+    <h1>ClearR Property Dashboard</h1>
+    <h2>Find property insights by entering an address below</h2>
+    <input type="text" id="addressInput" placeholder="Start typing an address..." autocomplete="off" />
+    <div id="vizContainer"></div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer-bottom">
+    <div class="footer-content">
+      <div class="contact-box">
+        <strong>Get in Touch</strong><br>
+        <span>1300 341 391</span><br>
+        <span>info@clearr.com.au</span><br>
+        <span>Sydney Place, Level 22, 180 George Street, Sydney 2000</span>
+      </div>
+    </div>
+  </div>
+  <div class="footer-top">
+    <small>&copy; 2024 ClearR. All Rights Reserved.</small>
+  </div>
 
   <!-- jQuery and jQuery UI -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
-
   <script>
     // Load addresses for autocomplete
     fetch('https://charismaclearr.github.io/property-dashboard/addresses.json')
@@ -28,7 +145,7 @@
         $('#addressInput').autocomplete({
           source: addresses,
           select: function(event, ui) {
-            const selectedAddress = ui.item.value; // This should be the full address
+            const selectedAddress = ui.item.value;
             loadTableauDashboard(selectedAddress);
           }
         });
@@ -37,18 +154,22 @@
         console.error('Failed to load addresses.json:', err);
       });
 
+    // Also handle manual entry (on Enter or blur)
+    $('#addressInput').on('change', function() {
+      const enteredAddress = $(this).val();
+      if (enteredAddress.trim().length > 0) {
+        loadTableauDashboard(enteredAddress);
+      }
+    });
+
     function loadTableauDashboard(address) {
-  // Remove commas from the address
-      const addressNoCommas = address.replace(/,/g, '');
-      const paramValue = encodeURIComponent(addressNoCommas);
       const paramName = 'FullAddress%20Parameter';
+      const paramValue = encodeURIComponent(address);
       const baseUrl = 'https://public.tableau.com/views/AddressDashboard_17479873620460/MapDashboard';
       const params = `?:embed=y&:showVizHome=no&${paramName}=${paramValue}`;
       const fullUrl = `${baseUrl}${params}`;
-
-      // Render in an iframe (most robust for Tableau Public)
       document.getElementById('vizContainer').innerHTML =
-        `<iframe src="${fullUrl}" allowfullscreen></iframe>`;
+        `<iframe src="${fullUrl}" width="1000" height="827" allowfullscreen></iframe>`;
     }
   </script>
 </body>
