@@ -30,7 +30,7 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 
-  <!-- Tableau JS API (load safely with callback) -->
+  <!-- Tableau JS API loader -->
   <script>
     let tableauLoaded = false;
     let tableauReadyQueue = [];
@@ -49,7 +49,6 @@
       tableauReadyQueue = [];
     }
 
-    // Dynamically load Tableau JS API
     const script = document.createElement('script');
     script.src = 'https://public.tableau.com/javascripts/api/tableau-2.min.js';
     script.onload = onTableauScriptLoaded;
@@ -60,13 +59,12 @@
     let viz;
 
     function loadTableauDashboard(address) {
-      const vizUrl = "https://prod-apsoutheast-a.online.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js'></script><tableau-viz id='tableau-viz' src='https://prod-apsoutheast-a.online.tableau.com/t/clearrtableau/views/AddressDashboard/MapDashboard?:embed=y&:showVizHome=no' width='1000' height='840' hide-tabs toolbar='bottom' ></tableau-viz>"; // Replace this
+      const vizUrl = "https://prod-apsoutheast-a.online.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js'></script><tableau-viz id='tableau-viz' src='https://prod-apsoutheast-a.online.tableau.com/t/clearrtableau/views/AddressDashboard/MapDashboard?:embed=y&:showVizHome=no' width='1000' height='840' hide-tabs toolbar='bottom' ></tableau-viz>"; // Replace with actual URL
       const containerDiv = document.getElementById("vizContainer");
 
       const options = {
         hideTabs: true,
         onFirstInteractive: function () {
-          console.log("Dashboard loaded");
           setAddressParameter(address);
         }
       };
@@ -94,7 +92,6 @@
             source: addresses,
             select: function (event, ui) {
               const selectedAddress = ui.item.value;
-              console.log("Selected:", selectedAddress);
               whenTableauReady(() => loadTableauDashboard(selectedAddress));
             }
           });
@@ -106,4 +103,3 @@
   </script>
 </body>
 </html>
-
