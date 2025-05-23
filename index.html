@@ -28,7 +28,7 @@
         $('#addressInput').autocomplete({
           source: addresses,
           select: function(event, ui) {
-            const selectedAddress = ui.item.value;
+            const selectedAddress = ui.item.value; // This should be the full address
             loadTableauDashboard(selectedAddress);
           }
         });
