@@ -263,7 +263,7 @@
   <script>
     var selectedAddr = "";
     // Load addresses for autocomplete
-    fetch('fetch('/addresses.json')')
+    fetch('/addresses.json')
       .then(res => res.json())
       .then(addresses => {
         $('#addressInput').autocomplete({
@@ -286,16 +286,17 @@
     });
 
     function loadTableauDashboard() {
-      if (selectedAddr != null && selectedAddr.trim() != "") {
-        const paramName = 'FullAddress%20Parameter';
-        const paramValue = encodeURIComponent(selectedAddr);
-        const baseUrl = 'https://public.tableau.com/views/AddressDashboard_17479873620460/MapDashboard';
-        const params = `?:embed=y&:showVizHome=no&${paramName}=${paramValue}`;
-        const fullUrl = `${baseUrl}${params}`;
-        document.getElementById('vizContainer').innerHTML =
-          `<iframe src="${fullUrl}" width="1000" height="827" allowfullscreen></iframe>`;
-      }
-    }
+  const enteredAddress = document.getElementById('addressInput').value.trim();
+  if (enteredAddress !== "") {
+    const paramName = 'FullAddress%20Parameter';
+    const paramValue = encodeURIComponent(enteredAddress);
+    const baseUrl = 'https://public.tableau.com/views/AddressDashboard_17479873620460/MapDashboard';
+    const params = `?:embed=y&:showVizHome=no&${paramName}=${paramValue}`;
+    const fullUrl = `${baseUrl}${params}`;
+    document.getElementById('vizContainer').innerHTML =
+      `<iframe src="${fullUrl}" width="1000" height="827" allowfullscreen></iframe>`;
+  }
+}
   </script>
 </body>
 </html>
