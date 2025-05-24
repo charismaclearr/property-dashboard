@@ -263,7 +263,8 @@
   <script>
     var selectedAddr = "";
     // Load addresses for autocomplete
-    fetch('https://charismaclearr.github.io/property-dashboard/addresses.json')
+    fetch('fetch('/addresses.json')
+')
       .then(res => res.json())
       .then(addresses => {
         $('#addressInput').autocomplete({
